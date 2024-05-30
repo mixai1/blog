@@ -5,6 +5,7 @@ temp/
 wwwroot/
 .idea/
 .vscode/
+.vs/
 .sonarqube/
 ui/.scannerwork/
 allure-results/
