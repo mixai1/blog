@@ -3,25 +3,27 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34407.89
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blog.Application", "src\Blog.Application\Blog.Application.csproj", "{4456BB4C-9EB5-4F09-BEB2-A81006398431}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blog.Application", "src\Blog.Application\Blog.Application.csproj", "{4456BB4C-9EB5-4F09-BEB2-A81006398431}"
 	ProjectSection(ProjectDependencies) = postProject
 		{0A186CBF-8970-4A2F-8C9D-FB94DD1A6CA8} = {0A186CBF-8970-4A2F-8C9D-FB94DD1A6CA8}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blog.Entities", "src\Blog.Entities\Blog.Entities.csproj", "{AD81247A-EB3A-417A-A055-55297E0C4294}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blog.Entities", "src\Blog.Entities\Blog.Entities.csproj", "{AD81247A-EB3A-417A-A055-55297E0C4294}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blog.Dal", "src\Blog.Dal\Blog.Dal.csproj", "{BD0C828A-437D-465B-9F0F-3CE87D8640DE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blog.Dal", "src\Blog.Dal\Blog.Dal.csproj", "{BD0C828A-437D-465B-9F0F-3CE87D8640DE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blog.Core", "src\Blog.Core\Blog.Core.csproj", "{A411C4F7-BF22-4FE8-93E3-2686845EFF89}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blog.Core", "src\Blog.Core\Blog.Core.csproj", "{A411C4F7-BF22-4FE8-93E3-2686845EFF89}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blog.Services", "src\Blog.Services\Blog.Services.csproj", "{0A186CBF-8970-4A2F-8C9D-FB94DD1A6CA8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blog.Services", "src\Blog.Services\Blog.Services.csproj", "{0A186CBF-8970-4A2F-8C9D-FB94DD1A6CA8}"
 	ProjectSection(ProjectDependencies) = postProject
 		{36A4EA5A-DAF7-45E9-A622-3EB121275956} = {36A4EA5A-DAF7-45E9-A622-3EB121275956}
 		{A411C4F7-BF22-4FE8-93E3-2686845EFF89} = {A411C4F7-BF22-4FE8-93E3-2686845EFF89}
 		{AD81247A-EB3A-417A-A055-55297E0C4294} = {AD81247A-EB3A-417A-A055-55297E0C4294}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blog.Dtos", "src\Blog.Dtos\Blog.Dtos.csproj", "{36A4EA5A-DAF7-45E9-A622-3EB121275956}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blog.Dtos", "src\Blog.Dtos\Blog.Dtos.csproj", "{36A4EA5A-DAF7-45E9-A622-3EB121275956}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blog.Exceptions", "src\Blog.Exceptions\Blog.Exceptions.csproj", "{2A98E318-C794-4791-994B-AA0B0FAE6351}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -53,6 +55,10 @@ Global
 		{36A4EA5A-DAF7-45E9-A622-3EB121275956}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{36A4EA5A-DAF7-45E9-A622-3EB121275956}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{36A4EA5A-DAF7-45E9-A622-3EB121275956}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2A98E318-C794-4791-994B-AA0B0FAE6351}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A98E318-C794-4791-994B-AA0B0FAE6351}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A98E318-C794-4791-994B-AA0B0FAE6351}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A98E318-C794-4791-994B-AA0B0FAE6351}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

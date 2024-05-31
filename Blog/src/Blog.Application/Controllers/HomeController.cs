@@ -1,11 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.IO;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Blog.Application.Controllers;
 
-public class HomeController : ControllerBase {
+[AllowAnonymous]
+public class HomeController : Controller {
     [HttpGet]
     public IActionResult Index() {
-        var file = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "browser", "index.html");
+        var file = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "index.html");
         return PhysicalFile(file, "text/html");
     }
 }

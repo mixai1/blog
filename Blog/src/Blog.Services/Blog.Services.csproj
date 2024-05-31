@@ -2,8 +2,13 @@
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Blog.Dal\Blog.Dal.csproj" />
+    <ProjectReference Include="..\Blog.Dtos\Blog.Dtos.csproj" />
+    <ProjectReference Include="..\Blog.Exceptions\Blog.Exceptions.csproj" />
+  </ItemGroup>
 
 </Project>
