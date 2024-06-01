@@ -10,5 +10,6 @@ public class User : IdentityUser<long>, IId<long> {
     public string LastName { get; set; } = string.Empty;
 
     public List<Role> Roles { get; set; } = new();
+    public List<Post> Posts { get; set; } = new();
     public List<Comment> Comments { get; set; } = new();
 }

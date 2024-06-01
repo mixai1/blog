@@ -1,7 +1,9 @@
 using System.Text.Json.Serialization;
 using Blog.Application.Filters;
+using Blog.Dal;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -27,6 +29,8 @@ public class Program {
             .AddJsonOptions(options => {
                 options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
             });
+
+        builder.Services.AddApplicationDbContext(builder.Configuration.GetConnectionString("Blog")!);
 
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();

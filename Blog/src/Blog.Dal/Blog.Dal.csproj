@@ -17,9 +17,6 @@
         </PackageReference>
         <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.0" />
     </ItemGroup>
-    <ItemGroup>
-        <Folder Include="EntityConfigurations\" />
-    </ItemGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\Blog.Entities\Blog.Entities.csproj" />
