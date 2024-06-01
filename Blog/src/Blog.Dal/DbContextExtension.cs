@@ -32,13 +32,18 @@ public static class DbContextExtension {
             return;
         }
 
+        SetUpDefaultRoles(serviceProvider).Wait();
         SetupDefaultUser(serviceProvider).Wait();
     }
 
+    private static async Task SetUpDefaultRoles(IServiceProvider serviceProvider) {
+        var roleManager = serviceProvider.GetRequiredService<RoleManager<Role>>();
+        await roleManager.CreateAsync(new Role { Name = Roles.Admin, User = null! });
+        await roleManager.CreateAsync(new Role { Name = Roles.User, User = null! });
+    }
+
     private static async Task SetupDefaultUser(IServiceProvider serviceProvider) {
-        using var scope = serviceProvider.CreateScope();
-        var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
-        var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<Role>>();
+        var userManager = serviceProvider.GetRequiredService<UserManager<User>>();
 
         var user = new User {
             Email = DefaultUser.Email,
@@ -46,8 +51,6 @@ public static class DbContextExtension {
         };
 
         await userManager.CreateAsync(user, DefaultUser.Password);
-        await roleManager.CreateAsync(new Role { Name = Roles.Admin });
-        await roleManager.CreateAsync(new Role { Name = Roles.User });
         await userManager.AddToRoleAsync(user, Roles.Admin);
     }
 }
