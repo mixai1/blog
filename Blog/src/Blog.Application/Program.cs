@@ -1,3 +1,5 @@
+using System.Text;
+using System;
 using System.Text.Json.Serialization;
 using Blog.Application.Filters;
 using Blog.Dal;
@@ -42,7 +44,9 @@ public class Program {
                 options.Password.RequireLowercase = false;
                 options.SignIn.RequireConfirmedEmail = false;
                 options.Password.RequiredLength = 5;
-                options.User.RequireUniqueEmail = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.User.RequireUniqueEmail = true;
             })
             .AddEntityFrameworkStores<BlogDbContext>()
             .AddDefaultTokenProviders();
@@ -57,7 +61,13 @@ public class Program {
                     ValidateIssuer = true,
                     ValidateAudience = true,
                     ValidateLifetime = true,
-                    ValidateIssuerSigningKey = true
+                    ValidateIssuerSigningKey = true,
+
+                    ValidIssuer = builder.Configuration["Jwt:Issuer"],
+                    ValidAudience = builder.Configuration["Jwt:Audience"],
+                    IssuerSigningKey =
+                        new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:AccessToken:Secret"]!)),
+                    ClockSkew = TimeSpan.Zero
                 };
             });
 
@@ -90,6 +100,11 @@ public class Program {
         app.UseAuthorization();
 
         app.MapControllerRoute("default", "{controller=Home}/{action=Index}");
+
+        using var scope = app.Services.CreateScope();
+        var serviceProvider = scope.ServiceProvider;
+        var context = serviceProvider.GetRequiredService<BlogDbContext>();
+        context.Seed(serviceProvider);
 
         app.Run();
     }
