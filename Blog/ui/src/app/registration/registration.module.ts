@@ -10,7 +10,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { RegistrationComponent } from './components/registration/registration.component';
 import { RegistrationFormService } from './services/registration-form.service';
 import { RegistrationRoutingModule } from './registration-routing.module';
-import { RegistrationApiService } from './services/registration-api.service';
 
 @NgModule({
     declarations: [RegistrationComponent],
@@ -24,6 +23,6 @@ import { RegistrationApiService } from './services/registration-api.service';
         ReactiveFormsModule,
         RegistrationRoutingModule,
     ],
-    providers: [RegistrationApiService, RegistrationFormService]
+    providers: [RegistrationFormService]
 })
 export class RegistrationModule {}

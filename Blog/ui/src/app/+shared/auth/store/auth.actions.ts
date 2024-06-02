@@ -18,3 +18,7 @@ export class Logout {
 export class LoadCurrentUser {
     static readonly type = '[Auth] Load current user';
 }
+
+export class Unauthorized {
+    static readonly type = '[Auth] Unauthorized';
+}

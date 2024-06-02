@@ -9,6 +9,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 import { LoginComponent } from './components/login/login.component';
 import { LoginRoutingModule } from './login-routing.module';
+import { RouterOutlet } from '@angular/router';
 
 @NgModule({
     declarations: [LoginComponent],
@@ -18,6 +19,7 @@ import { LoginRoutingModule } from './login-routing.module';
         MatButtonModule,
         MatCheckboxModule,
         MatFormFieldModule,
+        RouterOutlet,
         MatIconModule,
         MatInputModule,
         ReactiveFormsModule,

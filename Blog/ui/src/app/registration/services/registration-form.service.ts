@@ -5,11 +5,9 @@ import { Observable, of } from 'rxjs';
 
 import { EMAIL_PATTERN, ValidationHelper } from '@shared/helpers/validation.helper';
 
-import { RegistrationApiService } from './registration-api.service';
-
 @Injectable()
 export class RegistrationFormService {
-    constructor(private fb: FormBuilder, private apiService: RegistrationApiService) {}
+    constructor(private fb: FormBuilder) {}
 
     createForm(): FormGroup<{
         email: FormControl<string>;
@@ -46,10 +44,11 @@ export class RegistrationFormService {
                 return of(null);
             }
 
-            return this.apiService.checkExistence(control.value).pipe(
-                catchError(() => of({ errorSignUp: true })),
-                map(exists => (exists ? { existUserName: true } : null))
-            );
+            return of(null);
+            // return this.apiService.checkExistence(control.value).pipe(
+            //     catchError(() => of({ errorSignUp: true })),
+            //     map(exists => (exists ? { existUserName: true } : null))
+            // );
         };
     }
 }

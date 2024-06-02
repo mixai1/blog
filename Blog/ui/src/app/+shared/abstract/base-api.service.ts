@@ -1,99 +1,152 @@
-import { catchError, finalize, map, share } from 'rxjs/operators';
-import { Directive } from '@angular/core';
-import { HttpErrorResponse, HttpHeaders, HttpResponse } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
-import { ToastrService } from 'ngx-toastr';
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse } from '@angular/common/http';
+import { map, share } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { Store } from '@ngxs/store';
 
-import { HttpCustomClient } from '@shared/http-custom/http-custom.client';
+import { environment } from '../../../environments/environment';
+//import { SetError } from '../toast/store/toast.actions';
+import { Unauthorized } from '../auth/store/auth.actions';
+import { SetError } from '@shared/toast';
 
-@Directive()
 export abstract class BaseApiService {
     protected apiRelativePath = '/api/';
 
+    protected errorDispatchEnabled = true;
+
     private _inFlight: any = {};
 
-    constructor(protected http: HttpCustomClient, protected toastService: ToastrService) {}
+    constructor(protected http: HttpClient, protected store: Store) {}
 
-    protected httpGet<T>(url: string): Observable<T> {
+    protected httpGet<T>(url: string, ctor: (value: any) => T, options: HttpHeaders): Observable<any> {
         if (this._inFlight[url.toLowerCase()]) {
             return this._inFlight[url.toLowerCase()];
         }
         const request: Observable<any> = this.http
-            .get<T>(`${this.apiRelativePath}${url}`, { observe: 'response', headers: this.getHeaders() })
+            .get<T>(this.apiRelativePath + url, {
+                observe: 'response',
+                headers: options
+            })
             .pipe(
-                map((res: HttpResponse<T>) => res.body),
-                share(),
-                catchError((error: HttpErrorResponse) => this.handleError(error)),
-                finalize(() => this.clearInFlight(url))
+                map((res: HttpResponse<T>) => this.mapType<T>(res, ctor)),
+                share()
             );
         this._inFlight[url.toLowerCase()] = request;
+        request.subscribe({
+            error: (error: HttpErrorResponse) => this.handleError(error),
+            complete: () => this.clearInFlight(url)
+        });
 
         return request;
     }
 
     protected httpGetBlob(url: string): Observable<Blob> {
-        if (this._inFlight[url.toLowerCase()]) {
-            return this._inFlight[url.toLowerCase()];
-        }
-        return this.http.get(`${this.apiRelativePath}${url}`, {
-            responseType: 'blob',
-            headers: this.getHeaders()
+        return this.http.get(this.apiRelativePath + url, {
+            responseType: 'blob'
         });
     }
 
-    protected httpPost<T>(url: string, data: any = null): Observable<T> {
+    protected httpPostBlob(url: string, data: any = null): Observable<Blob> {
+        return this.http.post(this.apiRelativePath + url, data, {
+            responseType: 'blob'
+        });
+    }
+
+    protected httpPost<T>(url: string, ctor: (value: any) => T, data: any = null, options: HttpHeaders): Observable<any> {
         const request: Observable<any> = this.http
-            .post<T>(this.apiRelativePath + url, data, { observe: 'response', headers: this.getHeaders() })
+            .post(this.apiRelativePath + url, data, {
+                observe: 'response',
+                headers: options
+            })
             .pipe(
-                map((res: HttpResponse<T>) => res.body),
-                share(),
-                catchError((error: HttpErrorResponse) => this.handleError(error))
+                map((res: HttpResponse<T>) => this.mapType<T>(res, ctor)),
+                share()
             );
+        request.subscribe({ error: (error: HttpErrorResponse) => this.handleError(error) });
 
         return request;
     }
 
-    protected httpPut<T>(url: string, data: any = null): Observable<T> {
+    protected httpPut<T>(url: string, ctor: (value: any) => T, data: any = null, options: HttpHeaders): Observable<any> {
         const request: Observable<any> = this.http
-            .put<T>(this.apiRelativePath + url, data, { observe: 'response', headers: this.getHeaders() })
+            .put(this.apiRelativePath + url, data, {
+                observe: 'response',
+                headers: options
+            })
             .pipe(
-                map((res: HttpResponse<T>) => res.body),
-                share(),
-                catchError((error: HttpErrorResponse) => this.handleError(error))
+                map((res: HttpResponse<T>) => this.mapType<T>(res, ctor)),
+                share()
             );
+
+        request.subscribe({ error: (error: HttpErrorResponse) => this.handleError(error) });
 
         return request;
     }
 
-    protected httpDelete<T>(url: string): Observable<T> {
+    protected httpDelete<T>(url: string, id: number, ctor: (value: any) => T, options: HttpHeaders): Observable<any> {
         const request: Observable<any> = this.http
-            .delete<T>(`${this.apiRelativePath}${url}`, { observe: 'response', headers: this.getHeaders() })
+            .delete(this.apiRelativePath + url + '/' + id, {
+                observe: 'response',
+                headers: options
+            })
             .pipe(
-                map((res: HttpResponse<T>) => res.body),
-                share(),
-                catchError((error: HttpErrorResponse) => this.handleError(error))
+                map((res: HttpResponse<T>) => this.mapType<T>(res, ctor)),
+                share()
             );
 
+        request.subscribe({ error: (error: HttpErrorResponse) => this.handleError(error) });
+
         return request;
-    }
-
-    public handleError(response: HttpErrorResponse): Observable<HttpErrorResponse> {
-        let message = typeof response.error === 'string' ? response.error : response.message;
-        message = message || response.statusText || 'Server error';
-        this.toastService.error(message);
-        return throwError(() => response);
-    }
-
-    protected getHeaders(headers: HttpHeaders | null = null): HttpHeaders {
-        if (!headers) {
-            headers = new HttpHeaders();
-        }
-        return headers.set('require-user', 'true');
     }
 
     private clearInFlight(url: string): void {
         if (this._inFlight[url.toLowerCase()]) {
             delete this._inFlight[url.toLowerCase()];
         }
+    }
+
+    public handleError(response: HttpErrorResponse): void {
+        if (!environment.production) {
+            console.error(response.error || response.status ? `${response.status} - ${response.statusText}` : 'Server error');
+        }
+        if (response && this.errorDispatchEnabled) {
+            let message: string = response.error || response.statusText || 'Server error';
+            const paths = window.location.hash.split('/').filter(x => x && x !== '#');
+            switch (response.status) {
+                case 0: // Possible CORS error
+                    if (paths.length) {
+                        localStorage['path'] = paths;
+                    }
+                    window.location.reload();
+                    return;
+                case 401:
+                    this.store.dispatch(new Unauthorized());
+                    break;
+                case 403:
+                    this.store.dispatch(new Unauthorized());
+                    window.location.href = `${window.location.origin}`;
+                    break;
+                case 404:
+                    message = 'Object not found';
+                    break;
+                default:
+                    break;
+            }
+            this.store.dispatch(new SetError(message));
+        }
+    }
+
+    protected mapType<T>(res: HttpResponse<T>, ctor: (value: any) => T): any {
+        const val: any = res.status === 204 ? null : res.body;
+        if (val === null) {
+            return null;
+        }
+
+        if (val === '[]') {
+            return [];
+        }
+        if (Array.isArray(val)) {
+            return val.map(x => ctor(x));
+        }
+        return ctor(val);
     }
 }
