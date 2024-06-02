@@ -11,7 +11,6 @@ using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,7 +19,6 @@ namespace Blog.Services.Implementations;
 
 public class AuthorizationService : IAuthorizationService {
     private readonly UserManager<User> _userManager;
-    private readonly RoleManager<Role> _roleManager;
     private readonly IConfiguration _configuration;
     private readonly SecurityTokenHandler _tokenHandler;
     private readonly SignInManager<User> _signInManager;
@@ -28,7 +26,6 @@ public class AuthorizationService : IAuthorizationService {
 
     public AuthorizationService(IServiceProvider service) {
         _userManager = service.GetRequiredService<UserManager<User>>();
-        _roleManager = service.GetRequiredService<RoleManager<Role>>();
         _tokenHandler = service.GetRequiredService<SecurityTokenHandler>();
         _signInManager = service.GetRequiredService<SignInManager<User>>();
         _configuration = service.GetRequiredService<IConfiguration>();
@@ -85,6 +82,53 @@ public class AuthorizationService : IAuthorizationService {
 
     public Task<JwtTokensModel> GetJwtAsync(UserRegistrationModel model) {
         return GetTokensForUser(model.Email);
+    }
+
+    public async Task<JwtTokensModel> RefreshTokenAsync(JwtTokensModel tokens) {
+        if (string.IsNullOrEmpty(tokens.AccessToken) || string.IsNullOrEmpty(tokens.RefreshToken)) {
+            throw new AuthorizationException();
+        }
+
+        var accessTokenSecret = Encoding.UTF8.GetBytes(_configuration["Jwt:AccessToken:Secret"]!);
+        var accessTokenExpiration = int.Parse(_configuration["Jwt:AccessToken:ExpirationInMinutes"]!);
+
+        var refreshTokenSecret = Encoding.UTF8.GetBytes(_configuration["Jwt:RefreshToken:Secret"]!);
+        var refreshTokenExpiration = int.Parse(_configuration["Jwt:RefreshToken:ExpirationInMinutes"]!);
+
+        var refreshTokenParameters = new TokenValidationParameters {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+
+            ValidIssuer = _configuration["Jwt:Issuer"],
+            ValidAudience = _configuration["Jwt:Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(refreshTokenSecret),
+            ClockSkew = TimeSpan.Zero
+        };
+        var accessTokenParameters = refreshTokenParameters.Clone();
+        accessTokenParameters.ValidateLifetime = false;
+        accessTokenParameters.IssuerSigningKey = new SymmetricSecurityKey(accessTokenSecret);
+
+        var refreshTokenResult = await _tokenHandler.ValidateTokenAsync(tokens.RefreshToken, refreshTokenParameters);
+        var accessTokenResult = await _tokenHandler.ValidateTokenAsync(tokens.AccessToken, accessTokenParameters);
+
+        if (!refreshTokenResult.IsValid || !accessTokenResult.IsValid ||
+            refreshTokenResult.ClaimsIdentity.Name != accessTokenResult.ClaimsIdentity.Name) {
+            throw new AuthorizationException();
+        }
+
+        var user = await _userManager.FindByNameAsync(refreshTokenResult.ClaimsIdentity.Name!);
+        if (user == null) {
+            throw new AuthorizationException();
+        }
+
+        return new JwtTokensModel {
+            AccessToken = GenerateJwt(refreshTokenResult.ClaimsIdentity.Claims, accessTokenSecret,
+                accessTokenExpiration),
+            RefreshToken = GenerateJwt(refreshTokenResult.ClaimsIdentity.Claims, refreshTokenSecret,
+                refreshTokenExpiration),
+        };
     }
 
     private async Task<JwtTokensModel> GetTokensForUser(string userName) {

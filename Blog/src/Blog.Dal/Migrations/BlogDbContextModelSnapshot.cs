@@ -24,6 +24,9 @@ partial class BlogDbContextModelSnapshot : ModelSnapshot {
 
             NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
+            b.Property<long>("CreateTime")
+                .HasColumnType("bigint");
+
             b.Property<string>("Message")
                 .IsRequired()
                 .HasMaxLength(1000)
@@ -41,7 +44,7 @@ partial class BlogDbContextModelSnapshot : ModelSnapshot {
 
             b.HasIndex("UserId");
 
-            b.ToTable("Comment");
+            b.ToTable("Comments");
         });
 
         modelBuilder.Entity("Blog.Entities.Post", b => {
@@ -51,8 +54,12 @@ partial class BlogDbContextModelSnapshot : ModelSnapshot {
 
             NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
-            b.Property<DateTime>("CreateTime")
-                .HasColumnType("timestamp with time zone");
+            b.Property<string>("Body")
+                .IsRequired()
+                .HasColumnType("text");
+
+            b.Property<long>("CreateTime")
+                .HasColumnType("bigint");
 
             b.Property<string>("Header")
                 .IsRequired()
@@ -71,7 +78,7 @@ partial class BlogDbContextModelSnapshot : ModelSnapshot {
 
             b.HasIndex("UserId");
 
-            b.ToTable("Post");
+            b.ToTable("Posts");
         });
 
         modelBuilder.Entity("Blog.Entities.Role", b => {

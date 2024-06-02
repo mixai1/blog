@@ -6,8 +6,8 @@ using Microsoft.EntityFrameworkCore;
 namespace Blog.Dal;
 
 public class BlogDbContext : IdentityDbContext<User, Role, long> {
-    public DbSet<Post> Posts = null!;
-    public DbSet<Comment> Comments = null!;
+    public DbSet<Post> Posts { get; set; } = null!;
+    public DbSet<Comment> Comments { get; set; } = null!;
 
     public BlogDbContext(DbContextOptions<BlogDbContext> options) : base(options) { }
 

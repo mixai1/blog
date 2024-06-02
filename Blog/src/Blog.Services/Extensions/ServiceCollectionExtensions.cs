@@ -13,13 +13,20 @@ public static class ServiceCollectionExtensions {
     public static IServiceCollection AddApplicationServices(this IServiceCollection services) {
         return services
              .AddMapster()
-             .AddScoped<IAuthorizationService, AuthorizationService>()
-             .AddScoped(typeof(SecurityTokenHandler), typeof(JwtSecurityTokenHandler));
+             .AddScoped(typeof(IAuthorizationService), typeof(AuthorizationService))
+             .AddScoped(typeof(SecurityTokenHandler), typeof(JwtSecurityTokenHandler))
+             .AddScoped(typeof(IPostService), typeof(PostService))
+             .AddScoped(typeof(ICommentService), typeof(CommentService));
     }
 
     private static IServiceCollection AddMapster(this IServiceCollection services) {
         return services
-            .AddSingleton(TypeAdapterConfig.GlobalSettings.AddUserConfiguration())
+            .AddSingleton(
+                TypeAdapterConfig.GlobalSettings
+                    .AddUserConfiguration()
+                    .AddPostConfiguration()
+                    .AddCommentConfiguration()
+                )
             .AddScoped<IMapper, Mapper>();
     }
 }

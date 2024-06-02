@@ -8,5 +8,6 @@ public interface IAuthorizationService {
     Task<bool> RegisterUserAsync(UserRegistrationModel model);
     Task<JwtTokensModel> GetJwtAsync(UserLoginModel model);
     Task<JwtTokensModel> GetJwtAsync(UserRegistrationModel model);
+    Task<JwtTokensModel> RefreshTokenAsync(JwtTokensModel jwtTokens);
     Task LogoutAsync();
 }

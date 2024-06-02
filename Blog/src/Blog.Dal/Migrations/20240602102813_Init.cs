@@ -111,19 +111,20 @@ public partial class Init : Migration {
             });
 
         migrationBuilder.CreateTable(
-            name: "Post",
+            name: "Posts",
             columns: table => new {
                 Id = table.Column<long>(type: "bigint", nullable: false)
                     .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                 Photo = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
                 Header = table.Column<string>(type: "character varying(5000)", maxLength: 5000, nullable: false),
-                CreateTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                Body = table.Column<string>(type: "text", nullable: false),
+                CreateTime = table.Column<long>(type: "bigint", nullable: false),
                 UserId = table.Column<long>(type: "bigint", nullable: true)
             },
             constraints: table => {
-                table.PrimaryKey("PK_Post", x => x.Id);
+                table.PrimaryKey("PK_Posts", x => x.Id);
                 table.ForeignKey(
-                    name: "FK_Post_AspNetUsers_UserId",
+                    name: "FK_Posts_AspNetUsers_UserId",
                     column: x => x.UserId,
                     principalTable: "AspNetUsers",
                     principalColumn: "Id",
@@ -172,26 +173,27 @@ public partial class Init : Migration {
             });
 
         migrationBuilder.CreateTable(
-            name: "Comment",
+            name: "Comments",
             columns: table => new {
                 Id = table.Column<long>(type: "bigint", nullable: false)
                     .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                 Message = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: false),
+                CreateTime = table.Column<long>(type: "bigint", nullable: false),
                 PostId = table.Column<long>(type: "bigint", nullable: false),
                 UserId = table.Column<long>(type: "bigint", nullable: true)
             },
             constraints: table => {
-                table.PrimaryKey("PK_Comment", x => x.Id);
+                table.PrimaryKey("PK_Comments", x => x.Id);
                 table.ForeignKey(
-                    name: "FK_Comment_AspNetUsers_UserId",
+                    name: "FK_Comments_AspNetUsers_UserId",
                     column: x => x.UserId,
                     principalTable: "AspNetUsers",
                     principalColumn: "Id",
                     onDelete: ReferentialAction.SetNull);
                 table.ForeignKey(
-                    name: "FK_Comment_Post_PostId",
+                    name: "FK_Comments_Posts_PostId",
                     column: x => x.PostId,
-                    principalTable: "Post",
+                    principalTable: "Posts",
                     principalColumn: "Id",
                     onDelete: ReferentialAction.Cascade);
             });
@@ -239,18 +241,18 @@ public partial class Init : Migration {
             unique: true);
 
         migrationBuilder.CreateIndex(
-            name: "IX_Comment_PostId",
-            table: "Comment",
+            name: "IX_Comments_PostId",
+            table: "Comments",
             column: "PostId");
 
         migrationBuilder.CreateIndex(
-            name: "IX_Comment_UserId",
-            table: "Comment",
+            name: "IX_Comments_UserId",
+            table: "Comments",
             column: "UserId");
 
         migrationBuilder.CreateIndex(
-            name: "IX_Post_UserId",
-            table: "Post",
+            name: "IX_Posts_UserId",
+            table: "Posts",
             column: "UserId");
     }
 
@@ -272,13 +274,13 @@ public partial class Init : Migration {
             name: "AspNetUserTokens");
 
         migrationBuilder.DropTable(
-            name: "Comment");
+            name: "Comments");
 
         migrationBuilder.DropTable(
             name: "AspNetRoles");
 
         migrationBuilder.DropTable(
-            name: "Post");
+            name: "Posts");
 
         migrationBuilder.DropTable(
             name: "AspNetUsers");

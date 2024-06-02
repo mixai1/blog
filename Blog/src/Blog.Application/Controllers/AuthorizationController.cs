@@ -25,6 +25,11 @@ public class AuthorizationController : ControllerBase {
         return Ok(await _authorizationService.GetJwtAsync(model));
     }
 
+    [HttpPost("RefreshToken")]
+    public async Task<IActionResult> RefreshToken(JwtTokensModel model) {
+        return Ok(await _authorizationService.RefreshTokenAsync(model));
+    }
+
     [HttpGet("SignOut")]
     public async Task<IActionResult> LogOut() {
         await _authorizationService.LogoutAsync();
