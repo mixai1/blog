@@ -1,0 +1,128 @@
+@use '@angular/material' as mat;
+@use 'sass:map';
+
+$background-border-color: mat.get-color-from-palette(map.get($dark-theme, foreground), background-border-color);
+
+:host {
+    overflow-y: auto;
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: minmax(15px, auto) minmax(320px, 552px) minmax(15px, auto);
+
+    @include respond-to('sm') {
+        overflow: unset;
+    }
+
+    &::after {
+        content: '';
+        grid-column: 3 / 4;
+    }
+}
+
+mat-icon {
+    font-size: 24px;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    grid-column: 2 / 3;
+    padding: 16px 0;
+}
+
+.title {
+    gap: 4px;
+    margin: 16px 0;
+    display: flex;
+    flex-direction: column;
+
+    span {
+        line-height: 24px;
+        font-size: 20px;
+
+        &.large-title {
+            font-weight: bold;
+            font-size: 30px;
+            line-height: 35px;
+        }
+    }
+}
+
+.header {
+    min-height: 70px;
+    margin-top: 10vh;
+    display: grid;
+    font-size: 14px;
+    line-height: 16px;
+    grid-template-columns: minmax(auto, 100%) auto 15%;
+}
+
+.header-actions {
+    display: flex;
+    flex-direction: column;
+    grid-column: 2 / 3;
+    align-items: flex-end;
+    justify-content: flex-end;
+    width: 180px;
+    padding-right: 10px;
+    margin: 15px 0;
+}
+
+.block {
+    display: flex;
+    flex-direction: column;
+    min-height: 480px;
+    gap: 2px;
+    justify-content: space-between;
+    padding: 40px 60px;
+    align-items: center;
+    border-radius: 12px;
+    box-shadow: 0 0 6px 0 rgba($background-border-color, 0.06), 25px 15px 25px 0 rgba($background-border-color, 0.15);
+
+    > * {
+        width: 100%;
+    }
+
+    @include respond-to('sm') {
+        padding: 40px 32px;
+    }
+}
+
+.additional {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: center;
+
+    a {
+        text-decoration: none;
+    }
+}
+
+footer {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    margin: 15px 0;
+}
+
+.confirm-btn {
+    height: 40px;
+    min-width: 120px;
+    border-radius: 20px;
+    box-shadow: 0 1px 2px 0 rgba($background-border-color, 0.3);
+    font-size: 12px;
+    text-transform: uppercase;
+}
+
+.mat-mdc-form-field::ng-deep {
+    .mat-mdc-form-field-subscript-wrapper::before {
+        content: none;
+    }
+}

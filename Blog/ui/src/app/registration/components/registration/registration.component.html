@@ -1,0 +1,109 @@
+<div class="content">
+    <div class="header">
+        <div class="header-actions">
+            <span>Already have an account?</span>
+            <a [routerLink]="loginLink">Log In</a>
+        </div>
+    </div>
+    <form
+        *ngIf="form && { status: form.statusChanges | async }"
+        class="block"
+        [formGroup]="form">
+        <div class="title">
+            <span class="large-title">Set Up Your Account</span>
+            <span>Fill in your profile details</span>
+        </div>
+        <mat-form-field
+            floatLabel="auto"
+            appearance="outline">
+            <mat-label>Email</mat-label>
+            <input
+                name="email"
+                autocomplete="on"
+                matInput
+                required
+                [formControl]="form.controls.email"
+                (keydown.enter)="onRegisterUser()" />
+            <mat-error *ngIf="form.controls.email.hasError('pattern')">
+                Incorrect Email address
+            </mat-error>
+            <mat-error *ngIf="form.controls.email.hasError('existUserName')">
+                This Email is already used by another account
+            </mat-error>
+            <mat-error *ngIf="form.controls.email.hasError('required')">
+                Email is required
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field
+            [class.password-field]="!form.controls.password.hasError('required') || !form.controls.password.touched"
+            color="accent"
+            floatLabel="auto"
+            appearance="outline">
+            <mat-label>Password</mat-label>
+            <input
+                class="password-input"
+                matInput
+                required
+                autocomplete="off"
+                [type]="hidePassword ? 'password' : 'text'"
+                [formControl]="form.controls.password"
+                (keydown.enter)="onRegisterUser()" />
+            <mat-icon
+                matSuffix
+                (click)="hidePassword = !hidePassword"></mat-icon>
+            <mat-error *ngIf="form.controls.password.hasError('required')">
+                Confirm password is required
+            </mat-error>
+        </mat-form-field>
+        <div class="hints">
+            <ul>
+                <li [class.fulfilled]="form.controls.password.value && !form.controls.password.hasError('minlength')">
+                    6 characters minimum
+                </li>
+                <li [class.fulfilled]="form.controls.password.value && !form.controls.password.hasError('noLowerCase')">
+                    One lowercase character
+                </li>
+            </ul>
+            <ul>
+                <li [class.fulfilled]="form.controls.password.value && !form.controls.password.hasError('noNumberCase')">
+                    One number
+                </li>
+            </ul>
+        </div>
+        <mat-form-field
+            color="accent"
+            class="confirm-password-field"
+            floatLabel="auto"
+            appearance="outline">
+            <mat-label>Confirm Password</mat-label>
+            <input
+                class="password-input"
+                matInput
+                required
+                autocomplete="off"
+                [type]="hidePassword ? 'password' : 'text'"
+                [formControl]="form.controls.confirmPassword"
+                (keydown.enter)="onRegisterUser()" />
+            <mat-icon
+                class="material-symbols-outlined"
+                matSuffix
+                (click)="hidePassword = !hidePassword"></mat-icon>
+            <mat-error *ngIf="form.controls.confirmPassword.hasError('required')">
+                Confirm password is required
+            </mat-error>
+            <mat-error *ngIf="form.controls.confirmPassword.value && form.controls.confirmPassword.hasError('noMatch')">
+                Incorrect Password
+            </mat-error>
+        </mat-form-field>
+        <footer>
+            <button
+                class="confirm-btn"
+                mat-raised-button
+                color="warn"
+                [disabled]="form.pending"
+                (click)="onRegisterUser()">
+                Register
+            </button>
+        </footer>
+    </form>
+</div>

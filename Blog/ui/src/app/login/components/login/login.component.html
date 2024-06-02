@@ -1,0 +1,58 @@
+<div class="content">
+    <div class="header">
+        <div class="header-actions">
+            <span>Don't have an account?</span>
+            <a [routerLink]="signUpLink">Create an account</a>
+        </div>
+    </div>
+    <form
+        *ngIf="form"
+        class="block"
+        [formGroup]="form">
+        <div class="title">
+            <span class="large-title">Log In to Your Account</span>
+        </div>
+        <mat-form-field
+            floatLabel="auto"
+            appearance="outline">
+            <mat-label>Email</mat-label>
+            <input
+                name="email"
+                autocomplete="on"
+                matInput
+                required
+                [formControl]="form.controls.email"
+                (keydown.enter)="onLogin()" />
+            <mat-error *ngIf="form.controls.email.hasError('required')">Email is required</mat-error>
+            <mat-error *ngIf="form.controls.email.hasError('pattern')">Incorrect Email address</mat-error>
+        </mat-form-field>
+        <mat-form-field
+            color="accent"
+            floatLabel="auto"
+            appearance="outline">
+            <mat-label>Password</mat-label>
+            <input
+                matInput
+                required
+                class="password-input"
+                autocomplete="off"
+                [type]="hidePassword ? 'password' : 'text'"
+                [formControl]="form.controls.password"
+                (keydown.enter)="onLogin()" />
+            <mat-icon
+                matSuffix
+                (click)="hidePassword = !hidePassword">{{"hidePassword ? 'icon-visibility-off' : 'icon-visibility'"}}</mat-icon>
+            <mat-error *ngIf="form.controls.password.hasError('required')">Confirm password is required</mat-error>
+        </mat-form-field>
+        <footer>
+            <button
+                class="confirm-btn"
+                mat-raised-button
+                color="warn"
+                type="button"
+                (click)="onLogin()">
+                Login
+            </button>
+        </footer>
+    </form>
+</div>

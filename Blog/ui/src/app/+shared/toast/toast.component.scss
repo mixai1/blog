@@ -1,0 +1,27 @@
+:host {
+    display: flex;
+    background-image: none;
+    box-shadow: none !important;
+    padding: 15px !important;
+    border-radius: 56px !important;
+    width: 350px !important;
+    min-height: 56px;
+    max-height: 96px;
+}
+
+.row {
+    display: flex;
+    align-items: center;
+}
+
+mat-icon {
+    margin-right: 8px;
+}
+
+.content {
+    width: 290px;
+}
+
+.toast-message {
+    font-size: 18px;
+}
