@@ -13,8 +13,7 @@ const routes: Routes = [
         loadChildren: () => import('./registration/registration.module').then(x => x.RegistrationModule)
     },
     {
-        path: '**',
-        redirectTo: APP_ROUTES.Login
+        path: '**', redirectTo: APP_ROUTES.Login
     }
 ];
 @NgModule({

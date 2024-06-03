@@ -1,7 +1,7 @@
 import { RegistrationModel } from '@models/registration.model';
 import { UserLoginModel } from '@models/userLogin.model';
 
-export class RegisterUser {
+export class Register {
     static readonly type = '[Auth] Register User';
     constructor(public payload: RegistrationModel) {}
 }

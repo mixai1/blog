@@ -1,23 +1,52 @@
-﻿using Blog.Dtos.Comment;
+﻿using System;
+using System.Linq;
+using Blog.Dal;
+using Blog.Dtos.Comment;
 using Blog.Services.Interfaces;
+using MapsterMapper;
 using System.Threading.Tasks;
+using Blog.Entities;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Mapster;
 
 namespace Blog.Services.Implementations;
 
 public class CommentService : ICommentService {
-    public Task<long> AddAsync(CommentModel model) {
-        throw new System.NotImplementedException();
+    private readonly BlogDbContext _dbContext;
+    private readonly IMapper _mapper;
+
+    public CommentService(IServiceProvider service) {
+        _dbContext = service.GetRequiredService<BlogDbContext>();
+        _mapper = service.GetRequiredService<IMapper>();
     }
 
-    public Task<long> DeleteAsync(long commentId) {
-        throw new System.NotImplementedException();
+    public async Task<long> AddAsync(CommentModel model) {
+        var comment = _mapper.Map<Comment>(model);
+        await _dbContext.Comments.AddAsync(comment);
+        await _dbContext.SaveChangesAsync();
+        return comment.Id;
+    }
+
+    public async Task<long> DeleteAsync(long commentId) {
+        await _dbContext.Comments
+            .Where(x => x.Id == commentId)
+            .ExecuteDeleteAsync();
+        return commentId;
     }
 
     public Task<CommentModel> GetByIdAsync(long commentId) {
-        throw new System.NotImplementedException();
+        return _dbContext.Comments
+            .AsNoTracking()
+            .ProjectToType<CommentModel>()
+            .FirstAsync();
     }
 
-    public Task<CommentModel> UpdateAsync(CommentModel model) {
-        throw new System.NotImplementedException();
+    public async Task<CommentModel> UpdateAsync(CommentModel model) {
+        await _dbContext.Comments.ExecuteUpdateAsync(
+            x => x.SetProperty(
+                p => p.Message, p => model.Message)
+        );
+        return model;
     }
 }

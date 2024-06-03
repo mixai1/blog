@@ -1,13 +1,14 @@
+import { Directive } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { map, share } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { Store } from '@ngxs/store';
 
 import { environment } from '../../../environments/environment';
-//import { SetError } from '../toast/store/toast.actions';
+import { SetError } from '../toast/store/toast.actions';
 import { Unauthorized } from '../auth/store/auth.actions';
-import { SetError } from '@shared/toast';
 
+@Directive()
 export abstract class BaseApiService {
     protected apiRelativePath = '/api/';
 
@@ -15,9 +16,12 @@ export abstract class BaseApiService {
 
     private _inFlight: any = {};
 
-    constructor(protected http: HttpClient, protected store: Store) {}
+    constructor(
+        protected http: HttpClient,
+        protected store: Store
+    ) { }
 
-    protected httpGet<T>(url: string, ctor: (value: any) => T, options: HttpHeaders): Observable<any> {
+    protected httpGet<T>(url: string, ctor: (value: any) => T, options?: HttpHeaders): Observable<any> {
         if (this._inFlight[url.toLowerCase()]) {
             return this._inFlight[url.toLowerCase()];
         }
@@ -51,14 +55,14 @@ export abstract class BaseApiService {
         });
     }
 
-    protected httpPost<T>(url: string, ctor: (value: any) => T, data: any = null, options: HttpHeaders): Observable<any> {
+    protected httpPost<T>(url: string, ctor: (value: any) => T, data: any, options?: HttpHeaders): Observable<any> {
         const request: Observable<any> = this.http
             .post(this.apiRelativePath + url, data, {
                 observe: 'response',
                 headers: options
             })
             .pipe(
-                map((res: HttpResponse<T>) => this.mapType<T>(res, ctor)),
+                map(res => this.mapType<T>(res as HttpResponse<T>, ctor)),
                 share()
             );
         request.subscribe({ error: (error: HttpErrorResponse) => this.handleError(error) });
@@ -73,7 +77,7 @@ export abstract class BaseApiService {
                 headers: options
             })
             .pipe(
-                map((res: HttpResponse<T>) => this.mapType<T>(res, ctor)),
+                map(res => this.mapType<T>(res as HttpResponse<T>, ctor)),
                 share()
             );
 
@@ -89,7 +93,7 @@ export abstract class BaseApiService {
                 headers: options
             })
             .pipe(
-                map((res: HttpResponse<T>) => this.mapType<T>(res, ctor)),
+                map(res => this.mapType<T>(res as HttpResponse<T>, ctor)),
                 share()
             );
 
