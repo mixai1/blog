@@ -10,12 +10,6 @@ $background-border-color: #000;
     display: grid;
     grid-template-columns: minmax(15px, auto) minmax(320px, 552px) minmax(15px, auto);
 
-    ::ng-deep {
-        .mat-checkbox label {
-            white-space: normal;
-        }
-    }
-
     &::after {
         content: '';
         grid-column: 3 / 4;
@@ -133,12 +127,6 @@ footer {
     }
 }
 
-.mat-mdc-form-field::ng-deep {
-    .mat-mdc-form-field-subscript-wrapper::before {
-        content: none;
-    }
-}
-
 .confirm-password-field {
-    margin-bottom: 22px;
+    margin-bottom: 20px;
 }

@@ -4,7 +4,7 @@ import { of } from 'rxjs';
 import { ResolveFn } from '@angular/router';
 import { Store } from '@ngxs/store';
 
-import { UserModel } from '@models/generated/user.model';
+import { UserModel } from '@models/user.model';
 
 import { AuthState } from '../store/auth.state';
 import { LoadCurrentUser } from '../store/auth.actions';

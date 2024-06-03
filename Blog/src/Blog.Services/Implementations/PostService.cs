@@ -7,6 +7,7 @@ using MapsterMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -39,6 +40,14 @@ public class PostService : IPostService {
             .AsNoTracking()
             .ProjectToType<PostModel>()
             .FirstAsync(x => x.Id == postId);
+    }
+
+    public Task<List<PostListModel>> GetAllPost() {
+       return _dbContext.Posts
+            .AsNoTracking()
+            .Include(x => x.Comments)
+            .ProjectToType<PostListModel>()
+            .ToListAsync();
     }
 
     public async Task<PostModel> UpdateAsync(PostModel model) {

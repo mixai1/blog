@@ -7,7 +7,7 @@ import { Store } from '@ngxs/store';
 
 import { APP_ROUTES } from '@shared/constants/app-routes.const';
 
-import { UserModel } from '@models/generated/user.model';
+import { UserModel } from '@models/user.model';
 
 import { AuthUserResolver } from '../resolvers/auth-user.resolver';
 

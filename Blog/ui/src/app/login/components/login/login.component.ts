@@ -6,7 +6,7 @@ import { APP_ROUTES } from '@shared/constants/app-routes.const';
 import { Login } from '@shared/auth/store/auth.actions';
 
 import { LoginFormInterface } from '@models/form-interfaces/login-form.interface';
-import { UserLoginModel } from '@models/userLogin.model';
+import { UserLoginModel } from '@models/user-login.model';
 
 @Component({
     changeDetection: ChangeDetectionStrategy.OnPush,

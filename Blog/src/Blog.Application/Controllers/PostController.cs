@@ -24,6 +24,11 @@ public class PostController : ControllerBase {
         return Ok(await _postService.GetByIdAsync(postId));
     }
 
+    [HttpGet]
+    public async Task<IActionResult> GetAllPost() {
+        return Ok(await _postService.GetAllPost());
+    }
+
     [HttpPost]
     public async Task<IActionResult> CreatePost(PostModel model) {
         return Ok(await _postService.AddAsync(model));

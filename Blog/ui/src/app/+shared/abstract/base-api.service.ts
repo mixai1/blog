@@ -6,7 +6,6 @@ import { Store } from '@ngxs/store';
 
 import { environment } from '../../../environments/environment';
 import { SetError } from '../toast/store/toast.actions';
-import { Unauthorized } from '../auth/store/auth.actions';
 
 @Directive()
 export abstract class BaseApiService {
@@ -122,13 +121,6 @@ export abstract class BaseApiService {
                     }
                     window.location.reload();
                     return;
-                case 401:
-                    this.store.dispatch(new Unauthorized());
-                    break;
-                case 403:
-                    this.store.dispatch(new Unauthorized());
-                    window.location.href = `${window.location.origin}`;
-                    break;
                 case 404:
                     message = 'Object not found';
                     break;

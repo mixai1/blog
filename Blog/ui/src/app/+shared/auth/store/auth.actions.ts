@@ -1,5 +1,5 @@
 import { RegistrationModel } from '@models/registration.model';
-import { UserLoginModel } from '@models/userLogin.model';
+import { UserLoginModel } from '@models/user-login.model';
 
 export class Register {
     static readonly type = '[Auth] Register User';
@@ -15,10 +15,10 @@ export class Logout {
     static readonly type = '[Auth] Logout User';
 }
 
-export class LoadCurrentUser {
-    static readonly type = '[Auth] Load current user';
+export class RefreshToken {
+    static readonly type = '[Auth] Refresh token'
 }
 
-export class Unauthorized {
-    static readonly type = '[Auth] Unauthorized';
+export class LoadCurrentUser {
+    static readonly type = '[Auth] Load current user';
 }

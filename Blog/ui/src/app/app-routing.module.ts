@@ -13,6 +13,10 @@ const routes: Routes = [
         loadChildren: () => import('./registration/registration.module').then(x => x.RegistrationModule)
     },
     {
+        path: APP_ROUTES.Blog,
+        loadChildren: () => import('./blog/blog.module').then(x => x.BlogModule)
+    },
+    {
         path: '**', redirectTo: APP_ROUTES.Login
     }
 ];

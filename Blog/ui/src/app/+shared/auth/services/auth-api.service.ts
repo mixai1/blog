@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { UserModel } from '@models/user-model';
-import { UserLoginModel } from '@models/userLogin.model';
+import { UserLoginModel } from '@models/user-login.model';
 import { JwtTokenModel } from '@models/jwt-token.model';
 
 import { BaseApiService } from '../../abstract/base-api.service';
@@ -21,7 +20,7 @@ export class AuthApiService extends BaseApiService {
     }
 
     public RefreshToken(model: JwtTokenModel): Observable<JwtTokenModel> {
-        return this.httpPost('Login', x => x, model);
+        return this.httpPost('RefreshToken', x => x, model);
     }
 
     public logout(): Observable<null> {

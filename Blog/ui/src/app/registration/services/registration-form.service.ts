@@ -1,6 +1,7 @@
-import { AbstractControl, AsyncValidatorFn, FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+
+import { RegistrationFormInterface } from '@models/form-interfaces/registration-form.interface';
 
 import { EMAIL_PATTERN, ValidationHelper } from '@shared/helpers/validation.helper';
 
@@ -8,16 +9,10 @@ import { EMAIL_PATTERN, ValidationHelper } from '@shared/helpers/validation.help
 export class RegistrationFormService {
     constructor(private fb: FormBuilder) {}
 
-    createForm(): FormGroup<{
-        email: FormControl<string>;
-        password: FormControl<string>;
-        confirmPassword: FormControl<string>;
-    }> {
+    createForm(): FormGroup<RegistrationFormInterface> {
         const form = this.fb.nonNullable.group({
             email: this.fb.nonNullable.control('', {
                 validators: [Validators.required, Validators.pattern(EMAIL_PATTERN)],
-                asyncValidators: [this.usernameAsyncValidator()],
-                updateOn: 'blur'
             }),
             password: [
                 '',
@@ -33,19 +28,5 @@ export class RegistrationFormService {
         });
         form.addValidators(ValidationHelper.valueMatch('password', 'confirmPassword'));
         return form;
-    }
-
-    public usernameAsyncValidator(): AsyncValidatorFn {
-        return (control: AbstractControl<string>): Observable<ValidationErrors | null> => {
-            if (!control.dirty || !control.value) {
-                return of(null);
-            }
-
-            return of(null);
-            // return this.apiService.checkExistence(control.value).pipe(
-            //     catchError(() => of({ errorSignUp: true })),
-            //     map(exists => (exists ? { existUserName: true } : null))
-            // );
-        };
     }
 }
