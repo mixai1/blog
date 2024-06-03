@@ -6,7 +6,7 @@
         </div>
     </div>
     <form
-        *ngIf="form && { status: form.statusChanges | async }"
+        *ngIf="form"
         class="block"
         [formGroup]="form">
         <div class="title">
@@ -100,7 +100,6 @@
                 class="confirm-btn"
                 mat-raised-button
                 color="warn"
-                [disabled]="form.pending"
                 (click)="onRegisterUser()">
                 Register
             </button>

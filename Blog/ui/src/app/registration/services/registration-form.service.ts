@@ -1,5 +1,4 @@
 import { AbstractControl, AsyncValidatorFn, FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
-import { catchError, map } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 
@@ -11,7 +10,6 @@ export class RegistrationFormService {
 
     createForm(): FormGroup<{
         email: FormControl<string>;
-        agree: FormControl<boolean>;
         password: FormControl<string>;
         confirmPassword: FormControl<string>;
     }> {
@@ -21,7 +19,6 @@ export class RegistrationFormService {
                 asyncValidators: [this.usernameAsyncValidator()],
                 updateOn: 'blur'
             }),
-            agree: [false, [Validators.requiredTrue]],
             password: [
                 '',
                 [

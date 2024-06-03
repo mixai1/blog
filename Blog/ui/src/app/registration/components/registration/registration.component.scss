@@ -1,7 +1,7 @@
 @use '@angular/material' as mat;
 @use 'sass:map';
 
-$background-border-color: mat.get-color-from-palette(map.get($dark-theme, foreground), background-border-color);
+$background-border-color: #000;
 
 :host {
     overflow-y: auto;
@@ -14,10 +14,6 @@ $background-border-color: mat.get-color-from-palette(map.get($dark-theme, foregr
         .mat-checkbox label {
             white-space: normal;
         }
-    }
-
-    @include respond-to('sm') {
-        overflow: unset;
     }
 
     &::after {
@@ -85,10 +81,6 @@ $background-border-color: mat.get-color-from-palette(map.get($dark-theme, foregr
     > * {
         width: 100%;
     }
-
-    @include respond-to('sm') {
-        padding: 40px 32px;
-    }
 }
 
 .initials {
@@ -149,14 +141,4 @@ footer {
 
 .confirm-password-field {
     margin-bottom: 22px;
-}
-
-@include respond-to('sm') {
-    .initials {
-        flex-direction: column;
-
-        .mat-mdc-form-field:first-child {
-            margin-bottom: 18px;
-        }
-    }
 }
