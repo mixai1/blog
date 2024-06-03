@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Blog.Application.Controllers;
 
-[Authorize(Roles = Roles.Admin)]
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class CommentController : ControllerBase {
@@ -29,11 +29,13 @@ public class CommentController : ControllerBase {
         return Ok(await _commentService.AddAsync(model));
     }
 
+    [Authorize(Roles = Roles.Admin)]
     [HttpPut]
     public async Task<IActionResult> UpdateComment(CommentModel model) {
         return Ok(await _commentService.UpdateAsync(model));
     }
 
+    [Authorize(Roles = Roles.Admin)]
     [HttpDelete]
     public async Task<IActionResult> DeleteComment(long commentId) {
         return Ok(await _commentService.DeleteAsync(commentId));

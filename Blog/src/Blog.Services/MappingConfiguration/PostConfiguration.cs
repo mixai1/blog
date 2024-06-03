@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using Blog.Dtos.Comment;
-using Blog.Dtos.Post;
+﻿using Blog.Dtos.Post;
 using Blog.Entities;
 using Mapster;
 
@@ -11,6 +9,7 @@ public static class PostConfiguration {
         config.NewConfig<PostModel, Post>();
         config.NewConfig<Post, PostModel>();
         config.NewConfig<Post, PostListModel>()
+            .Map(dest => dest.Comment, src => src.Comments)
             .PreserveReference(true);
         return config;
     }

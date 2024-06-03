@@ -43,10 +43,11 @@ public class CommentService : ICommentService {
     }
 
     public async Task<CommentModel> UpdateAsync(CommentModel model) {
-        await _dbContext.Comments.ExecuteUpdateAsync(
-            x => x.SetProperty(
-                p => p.Message, p => model.Message)
-        );
+        await _dbContext.Comments
+            .Where(x => x.Id == model.Id)
+            .ExecuteUpdateAsync(
+                x => x.SetProperty(p => p.Message, p => model.Message)
+             );
         return model;
     }
 }

@@ -13,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using Blog.Core.Constants;
 
 namespace Blog.Application;
 
@@ -70,6 +71,12 @@ public class Program {
                     ClockSkew = TimeSpan.Zero
                 };
             });
+
+        builder.Services.AddAuthorization(options => {
+            options.AddPolicy(Policy.MultiRole, policy => {
+                policy.RequireRole([Roles.Admin, Roles.User]);
+            });
+        });
 
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();

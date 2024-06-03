@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Blog.Application.Controllers;
 
-[Authorize(Roles = Roles.User)]
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class PostController : ControllerBase {
@@ -24,6 +24,7 @@ public class PostController : ControllerBase {
         return Ok(await _postService.GetByIdAsync(postId));
     }
 
+    [Authorize(Policy = Policy.MultiRole)]
     [HttpGet]
     public async Task<IActionResult> GetAllPost() {
         return Ok(await _postService.GetAllPost());
@@ -39,6 +40,7 @@ public class PostController : ControllerBase {
         return Ok(await _postService.UpdateAsync(model));
     }
 
+    [Authorize(Policy = Policy.MultiRole)]
     [HttpDelete("{postId}")]
     public async Task<IActionResult> DeletePost(long postId) {
         return Ok(await _postService.DeleteAsync(postId));

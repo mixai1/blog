@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 export class PostApiService extends BaseApiService {
     protected override apiRelativePath = '/api/post/'
 
-    public getPost(id: number): Observable<any> {
+    public getPosts(): Observable<any> {
         return this.httpGet('', x => x);
     }
 }

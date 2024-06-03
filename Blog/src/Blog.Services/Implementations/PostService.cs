@@ -45,17 +45,23 @@ public class PostService : IPostService {
     public Task<List<PostListModel>> GetAllPost() {
        return _dbContext.Posts
             .AsNoTracking()
-            .Include(x => x.Comments)
+            .Include(x => x.Comments
+                .OrderBy(x => x.CreateTime)
+                .Take(30)
+             )
             .ProjectToType<PostListModel>()
+            .OrderBy(x => x.CreateTime)
             .ToListAsync();
     }
 
     public async Task<PostModel> UpdateAsync(PostModel model) {
-        await _dbContext.Posts.ExecuteUpdateAsync(x => x
-                .SetProperty(p => p.Header, p => model.Header)
-                .SetProperty(p => p.Photo, p => model.Photo)
-                .SetProperty(p => p.Body, p => model.Body)
-                );
+        await _dbContext.Posts
+            .Where(x => x.Id == model.Id)
+            .ExecuteUpdateAsync(x => x
+                    .SetProperty(p => p.Header, p => model.Header)
+                    .SetProperty(p => p.Photo, p => model.Photo)
+                    .SetProperty(p => p.Body, p => model.Body)
+            );
         return model;
     }
 }
