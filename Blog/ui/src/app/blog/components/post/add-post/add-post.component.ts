@@ -3,10 +3,12 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngxs/store';
 import dayjs from 'dayjs';
 
-import { AddPostInterface } from '@models/form-interfaces/add-post.interface';
-import { AddPost } from 'src/app/blog/store/blog.actions';
 import { PostTypeEnum } from '@shared/enums/post-type.enum';
+
+import { AddPostInterface } from '@models/form-interfaces/add-post.interface';
 import { PostModel } from '@models/post.model';
+
+import { AddPost } from 'src/app/blog/store/blog.actions';
 
 @Component({
     changeDetection: ChangeDetectionStrategy.OnPush,
