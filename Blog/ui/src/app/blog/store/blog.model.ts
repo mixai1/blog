@@ -1,5 +1,5 @@
-import { PostModel } from '@models/post.model';
+import { PostListModel } from '@models/post-list.model';
 
 export interface BlogStateModel {
-    posts: PostModel[];
+    posts: PostListModel[];
 }

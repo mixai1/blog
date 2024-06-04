@@ -4,9 +4,9 @@ import { Store } from '@ngxs/store';
 
 import { GetPosts } from '../store/blog.actions';
 import { map } from 'rxjs';
-import { PostModel } from '@models/post.model';
+import { PostListModel } from '@models/post-list.model';
 
-export const PostResolver: ResolveFn<PostModel | null> = () => {
+export const PostResolver: ResolveFn<PostListModel[] | null> = () => {
     const store = inject(Store);
-    return store.dispatch(new GetPosts()).pipe(map(x => x.authState.currentUser));
+    return store.dispatch(new GetPosts()).pipe(map(x => x.blogState.posts));
 };

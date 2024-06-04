@@ -24,9 +24,9 @@ public class PostController : ControllerBase {
         return Ok(await _postService.GetByIdAsync(postId));
     }
 
-    [Authorize(Policy = Policy.MultiRole)]
     [HttpGet]
     public async Task<IActionResult> GetAllPost() {
+        //TODO: need add Lazy loading
         return Ok(await _postService.GetAllPost());
     }
 

@@ -1,0 +1,23 @@
+<div>
+    <mat-form-field>
+        <mat-label>header</mat-label>
+        <input matInput [formControl]="form.controls.header" placeholder="header">
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>body</mat-label>
+        <input matInput [formControl]="form.controls.body" placeholder="body">
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>url photo</mat-label>
+        <input matInput [formControl]="form.controls.photo" placeholder="Url photo">
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>post type</mat-label>
+        <mat-select [formControl]="form.controls.type">
+            <mat-option *ngFor="let type of postTypeOptions" [value]="type">
+                {{postTypes[type]}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    <button mat-button (click)="onAddPost()">Add post</button>
+</div>

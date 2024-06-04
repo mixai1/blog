@@ -14,6 +14,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Blog.Core.Constants;
+using Microsoft.AspNetCore.Http;
+using System.Security.Principal;
 
 namespace Blog.Application;
 
@@ -26,7 +28,11 @@ public class Program {
             .AddResponseCompression()
             .AddResponseCaching();
 
-        builder.Services.AddApplicationServices();
+        builder.Services
+            .AddApplicationServices();
+        builder.Services
+            .AddHttpContextAccessor()
+            .AddTransient<IPrincipal>(x => x?.GetRequiredService<IHttpContextAccessor>().HttpContext?.User!);
         builder.Services
             .AddControllers(options => {
                 options.Filters.Add(typeof(ExceptionFilter));

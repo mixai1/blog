@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
+import { AdminGuard } from '@shared/auth/guards/admin.guard';
 import { APP_ROUTES } from '@shared/constants/app-routes.const';
 
 const routes: Routes = [
@@ -14,6 +15,7 @@ const routes: Routes = [
     },
     {
         path: APP_ROUTES.Blog,
+        canActivate: [AdminGuard],
         loadChildren: () => import('./blog/blog.module').then(x => x.BlogModule)
     },
     {

@@ -11,7 +11,7 @@
         <div class="title">
             <span class="large-title">Log In to Your Account</span>
         </div>
-        <mat-form-field appearance="outline">
+        <mat-form-field>
             <mat-label>Email</mat-label>
             <input
                 name="email"
@@ -23,7 +23,7 @@
             <mat-error *ngIf="form.controls.email.hasError('required')">Email is required</mat-error>
             <mat-error *ngIf="form.controls.email.hasError('pattern')">Incorrect Email address</mat-error>
         </mat-form-field>
-        <mat-form-field appearance="outline">
+        <mat-form-field>
             <mat-label>Password</mat-label>
             <input
                 matInput

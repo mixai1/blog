@@ -16,6 +16,7 @@ import { ToastModule } from '@shared/toast/toast.module';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
+import { BlogModule } from './blog/blog.module';
 import { environment } from '../environments/environment';
 
 @NgModule({
@@ -24,6 +25,7 @@ import { environment } from '../environments/environment';
         NgxsModule.forRoot([], { developmentMode: !environment.production }),
         AppRoutingModule,
         AuthModule,
+        BlogModule,
         BrowserAnimationsModule,
         BrowserModule,
         CommonModule,
