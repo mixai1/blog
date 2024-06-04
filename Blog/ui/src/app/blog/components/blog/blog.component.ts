@@ -1,11 +1,11 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, ViewChild, ViewContainerRef } from '@angular/core';
-import { BlogState } from '../../store/blog.state';
-import { PostApiService } from '../../services/post-api.service';
 import { Store } from '@ngxs/store';
 import { takeUntil } from 'rxjs';
 
 import { DestroyComponent } from '@shared/abstract/destroy.component';
+
 import { BLOG_ROUTES } from '../../shared/constants/blog-routes.cont';
+import { BlogState } from '../../store/blog.state';
 
 @Component({
     changeDetection: ChangeDetectionStrategy.OnPush,
